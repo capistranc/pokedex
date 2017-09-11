@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F0A9394A2358E4D9A08BD6383F0508AF0B866F09",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "E86FF5ACB635B153253A8EDEADAB4F51EFB0B9ED" : 9223372036854775807,
+    "F0A9394A2358E4D9A08BD6383F0508AF0B866F09" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5EC2ED09-96BC-4694-9654-78E261536A48",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "E86FF5ACB635B153253A8EDEADAB4F51EFB0B9ED" : "..",
+    "F0A9394A2358E4D9A08BD6383F0508AF0B866F09" : "pokedex\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "pokedex",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "pokedex.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/capistranc\/mobileApps.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E86FF5ACB635B153253A8EDEADAB4F51EFB0B9ED"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/capistranc\/pokedex.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F0A9394A2358E4D9A08BD6383F0508AF0B866F09"
+    }
+  ]
+}

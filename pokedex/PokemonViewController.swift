@@ -12,8 +12,11 @@ import UIKit
 
 class PokemonViewController:UIViewController {
     var selectedPokemonId:Int?
+    var user:User?
     var pokemon:Pokemon?
     var imageView : UIImageView!
+    
+    @IBOutlet weak var mainViewContainer: UIStackView!
     
     @IBOutlet weak var nicknameField: UITextField!
     @IBOutlet weak var nicknameButton: UIButton!
@@ -39,6 +42,8 @@ class PokemonViewController:UIViewController {
         evo1.tag = 0
         evo2.tag = 1
         evo3.tag = 2
+        
+        nicknameField.isHidden = true
         
         api.getPokemonPage(callType: .Pokemon, forId: pokeId)
         api.getPokemonPage(callType: .SpeciesInfo, forId: pokeId)
@@ -71,30 +76,9 @@ class PokemonViewController:UIViewController {
     
     func selectBackground(type: String) {
         switch type {
-            //                    case "fire":
-            //                        assignBackground(name: "fireBackground")
-            //                    case "grass":
-            //                        assignBackground(name: "grassBackground")
-            //                    case "water":
-            //                        assignBackground(name: "waterBackground")
-            //                    case "electric":
-            //                        assignBackground(name: "eletricBackground")
-            //                    case "fighting":
-            //                        assignBackground(name: "fightingBackground")
-            //                    case "psychic":
-            //                        fallthrough
-            //                    case "ghost":
-            //                        assignBackground(name: "psychicBackground")
-            //                        break
-            //                    case "ground":
-            //                        fallthrough
-            //                    case "rock":
-            //                        assignBackground(name: "groundBackground")
-            //                        break
-            //                    case "dragon":
-        //                        assignBackground(name: "dragonBackground")
         default:
             assignBackground(name: "defaultBackground")
+            break
         }
     }
     
@@ -170,7 +154,8 @@ extension PokemonViewController:NetworkingDelegate {
                 self.pokemonSprite.image = image
             case .EvoSprite:
                 guard let evo = self.pokemon?.evo else {return print("failed gaurd 1")}
-                guard evo.count > 1 else {return print("failed guard 2")}
+                if evo.count == 1 {self.evo1.setImage(image, for: .normal)}
+                
                 let evoStrings = evo.flatMap{String($0)}
                 if evoStrings.count == 2 {
                     if image.accessibilityIdentifier ==  evoStrings[0] {

@@ -17,6 +17,7 @@
 		04274AFF1F62D48D00A94391 /* PokemonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274AFE1F62D48D00A94391 /* PokemonViewController.swift */; };
 		04274B011F62D4A600A94391 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274B001F62D4A600A94391 /* Networking.swift */; };
 		048E61191F644FC90009EEF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E61181F644FC90009EEF8 /* User.swift */; };
+		04CEB8601F6725880043BCD2 /* PokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CEB85F1F6725880043BCD2 /* PokeCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		04274AFE1F62D48D00A94391 /* PokemonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonViewController.swift; sourceTree = "<group>"; };
 		04274B001F62D4A600A94391 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		048E61181F644FC90009EEF8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		04CEB85F1F6725880043BCD2 /* PokeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				04274AE41F62D40C00A94391 /* PokemonTableController.swift */,
+				04CEB85F1F6725880043BCD2 /* PokeCell.swift */,
 				04274AFE1F62D48D00A94391 /* PokemonViewController.swift */,
 			);
 			name = UI;
@@ -191,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04CEB8601F6725880043BCD2 /* PokeCell.swift in Sources */,
 				04274AEB1F62D40D00A94391 /* pokedex.xcdatamodeld in Sources */,
 				04274AFD1F62D45C00A94391 /* Pokemon.swift in Sources */,
 				04274AE51F62D40C00A94391 /* PokemonTableController.swift in Sources */,

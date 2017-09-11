@@ -195,8 +195,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1iG-EZ-IJf" userLabel="Evolution">
                                         <rect key="frame" x="10" y="414.5" width="355" height="188.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evolutionary Line" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWt-6O-NOT">
-                                                <rect key="frame" x="112.5" y="0.0" width="130.5" height="20.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evolutionary Line" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWt-6O-NOT">
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -237,7 +237,10 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="OIc-5S-uPj" secondAttribute="bottom" id="0nw-q7-Ye0"/>
+                                            <constraint firstItem="OIc-5S-uPj" firstAttribute="top" secondItem="VWt-6O-NOT" secondAttribute="bottom" id="Goz-f2-kd1"/>
                                             <constraint firstAttribute="trailing" secondItem="OIc-5S-uPj" secondAttribute="trailing" id="Jeh-aj-N6b"/>
+                                            <constraint firstItem="OIc-5S-uPj" firstAttribute="top" secondItem="VWt-6O-NOT" secondAttribute="bottom" id="K16-9R-MZQ"/>
+                                            <constraint firstItem="VWt-6O-NOT" firstAttribute="leading" secondItem="OIc-5S-uPj" secondAttribute="leading" id="SRf-1m-Xwm"/>
                                             <constraint firstItem="OIc-5S-uPj" firstAttribute="leading" secondItem="1iG-EZ-IJf" secondAttribute="leading" id="xVr-dS-1h8"/>
                                         </constraints>
                                     </stackView>
@@ -266,6 +269,7 @@
                         <outlet property="evo3" destination="eKL-qL-at4" id="LoP-8a-TkH"/>
                         <outlet property="flavorText" destination="44z-p7-Fyu" id="txE-AO-0PR"/>
                         <outlet property="heightLabel" destination="HsJ-3g-kNL" id="zKL-Dk-7o8"/>
+                        <outlet property="mainViewContainer" destination="UGm-Xp-fYQ" id="qdq-NS-UhY"/>
                         <outlet property="nameLabel" destination="FAZ-uV-H72" id="fJz-xz-0ok"/>
                         <outlet property="nicknameButton" destination="gPD-xL-fHL" id="7BT-nT-JM6"/>
                         <outlet property="nicknameField" destination="wrO-9z-B2I" id="jPQ-ew-aIz"/>

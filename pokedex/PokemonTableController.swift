@@ -12,6 +12,7 @@ class PokemonTableController: UITableViewController {
     var imageView:UIImageView!
     var user = User()
     
+    
     var pokemonList:[String] = []
     func assignBackground(background:UIImage) {
         self.tableView.backgroundView = UIImageView(image: background)
@@ -26,14 +27,16 @@ class PokemonTableController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        assignBackground()
+        //        assignBackground()
         let api = Networking()
         api.delegate = self
         
         api.getPokemonPage(callType: .PokemonList, forId: nil)
         api.getPokemonImage(type: .Background, for: nil)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -45,6 +48,10 @@ class PokemonTableController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let api = Networking()
+        api.delegate = self
+        
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "Cell") else {
             fatalError("No cell created, bad Identifier")}
         var idText = String(indexPath.row+1);
@@ -55,7 +62,7 @@ class PokemonTableController: UITableViewController {
         
         cell.detailTextLabel?.text = user.nicknames[indexPath.row+1]
         cell.detailTextLabel?.textColor = .white
-
+        api.getPokemonImage(type: .PokeSprite, for: indexPath.row+1)
         return cell
     }
     
@@ -66,6 +73,7 @@ class PokemonTableController: UITableViewController {
         guard let indexPath = self.tableView.indexPathForSelectedRow else {return}
         
         nextView.selectedPokemonId = indexPath.row + 1
+        nextView.user = self.user
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -87,10 +95,25 @@ extension PokemonTableController:NetworkingDelegate {
     }
     
     func apiDidReturnWithImage(type:PokeImageType, image: UIImage) {
-        if type == .Background {
+        print("test")
+        switch type {
+        case .Background:
             DispatchQueue.main.async {
-        self.assignBackground(background: image)
+                self.assignBackground(background: image)
             }
+        case .PokeSprite:
+            print("test")
+            guard let idStr = image.accessibilityIdentifier else {return print("badId")}
+            guard let id = Int(idStr) else {return print("idNotAnInt")}
+            let i = IndexPath(row: id-1, section: 0)
+            
+            DispatchQueue.main.async {
+            guard let cell = self.tableView.cellForRow(at: i) else {return print("badCellId")}
+            cell.imageView?.image = image
+                self.tableView.reloadData()
+            }
+        default:
+            break
         }
     }
     
