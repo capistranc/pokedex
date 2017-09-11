@@ -16,7 +16,7 @@ enum NetworkError:Error {
 
 protocol NetworkingDelegate:class { // functions to return to master
     func apiDidReturnWithJson(json: [String:Any], callType: ApiPage)
-    func apiDidReturnWithImage(image: UIImage)
+    func apiDidReturnWithImage(type: PokeImageType, image: UIImage)
     
     func apiDidFailWithError(error: NetworkError)
     func apiResponseFailure(status: NetworkError)
@@ -27,6 +27,12 @@ enum ApiPage {
     case Pokemon
     case EvolutionChain
     case SpeciesInfo
+}
+
+enum PokeImageType {
+    case PokeSprite
+    case Background
+    case EvoSprite
 }
 
 func setPage(for callType: ApiPage) -> String {
@@ -78,8 +84,21 @@ class Networking {
         task.resume()
     }
     
-    func getPokemonImage(for id:Int) {
-        let urlString = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(id).png"
+    func setImageLocation(type:PokeImageType) -> String {
+        switch type {
+        case .Background:
+            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background.imageset/background.jpg"
+        case .PokeSprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+        case .EvoSprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+        }
+    }
+    
+    func getPokemonImage(type:PokeImageType, for id:Int?) {
+        var urlString = setImageLocation(type: type)
+        if let idStr = id {urlString = urlString + "\(idStr).png"}
+        
         guard let url = URL(string: urlString) else {
             self.delegate?.apiDidFailWithError(error: .ApiFailed("bad api endpoint"))
             return
@@ -100,8 +119,14 @@ class Networking {
             
             guard let data = data else {return}
             guard let image = UIImage(data:data) else {return}
-            image.accessibilityIdentifier = "\(id)"
-            self.delegate?.apiDidReturnWithImage(image: image)
+            if let idNum = id {
+                image.accessibilityIdentifier = "\(idNum)"
+            } else {
+                image.accessibilityIdentifier = "background"
+            }
+            
+            
+            self.delegate?.apiDidReturnWithImage(type: type, image: image)
         }
         
         task.resume()

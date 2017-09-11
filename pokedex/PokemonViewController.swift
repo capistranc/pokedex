@@ -29,16 +29,20 @@ class PokemonViewController:UIViewController {
     @IBOutlet weak var evo2: UIButton!
     @IBOutlet weak var evo3: UIButton!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let pokeId = selectedPokemonId else {return}
         self.pokemon = Pokemon(id: pokeId)
         let api = Networking()
         api.delegate = self
+        evo1.tag = 0
+        evo2.tag = 1
+        evo3.tag = 2
         
         api.getPokemonPage(callType: .Pokemon, forId: pokeId)
         api.getPokemonPage(callType: .SpeciesInfo, forId: pokeId)
-        api.getPokemonImage(for: pokeId)
+        api.getPokemonImage(type: .PokeSprite, for: pokeId)
         flavorText.numberOfLines = 0
         flavorText.sizeToFit()
     }
@@ -67,28 +71,28 @@ class PokemonViewController:UIViewController {
     
     func selectBackground(type: String) {
         switch type {
-//                    case "fire":
-//                        assignBackground(name: "fireBackground")
-//                    case "grass":
-//                        assignBackground(name: "grassBackground")
-//                    case "water":
-//                        assignBackground(name: "waterBackground")
-//                    case "electric":
-//                        assignBackground(name: "eletricBackground")
-//                    case "fighting":
-//                        assignBackground(name: "fightingBackground")
-//                    case "psychic":
-//                        fallthrough
-//                    case "ghost":
-//                        assignBackground(name: "psychicBackground")
-//                        break
-//                    case "ground":
-//                        fallthrough
-//                    case "rock":
-//                        assignBackground(name: "groundBackground")
-//                        break
-//                    case "dragon":
-//                        assignBackground(name: "dragonBackground")
+            //                    case "fire":
+            //                        assignBackground(name: "fireBackground")
+            //                    case "grass":
+            //                        assignBackground(name: "grassBackground")
+            //                    case "water":
+            //                        assignBackground(name: "waterBackground")
+            //                    case "electric":
+            //                        assignBackground(name: "eletricBackground")
+            //                    case "fighting":
+            //                        assignBackground(name: "fightingBackground")
+            //                    case "psychic":
+            //                        fallthrough
+            //                    case "ghost":
+            //                        assignBackground(name: "psychicBackground")
+            //                        break
+            //                    case "ground":
+            //                        fallthrough
+            //                    case "rock":
+            //                        assignBackground(name: "groundBackground")
+            //                        break
+            //                    case "dragon":
+        //                        assignBackground(name: "dragonBackground")
         default:
             assignBackground(name: "defaultBackground")
         }
@@ -110,23 +114,12 @@ class PokemonViewController:UIViewController {
         self.view.sendSubview(toBack: imageView)
     }
     
-    @IBAction func evo1ButtonTapped() {
-        guard let newSelectedPokemonId = self.pokemon?.evo?[0] else {return}
+    @IBAction func evoButtonTapped(_ sender:Any) {
+        guard let button = sender as? UIButton else {return}
+        guard let newSelectedPokemonId = self.pokemon?.evo?[button.tag] else {return}
         self.selectedPokemonId = newSelectedPokemonId
-        pokemonSprite.image = evo1.imageView?.image
+        pokemonSprite.image = button.imageView?.image
         initPageWithId(id: newSelectedPokemonId)
-    }
-    @IBAction func evo2ButtonTapped() {
-        guard let newSelectedPokemonId = self.pokemon?.evo?[1] else {return}
-        self.selectedPokemonId = newSelectedPokemonId
-        pokemonSprite.image = evo2.imageView?.image
-        initPageWithId(id: newSelectedPokemonId)
-        
-    }
-    @IBAction func evo3ButtonTapped() {
-        guard let newSelectedPokemonId = self.pokemon?.evo?[2] else {return}
-        initPageWithId(id: newSelectedPokemonId)
-        pokemonSprite.image = evo3.imageView?.image
     }
 }
 
@@ -149,7 +142,7 @@ extension PokemonViewController:NetworkingDelegate {
                 self.pokemon?.setEvolutionLine(json: json)
                 guard let evoList = self.pokemon?.evo else {return print("broke at evoList")}
                 for evoId in evoList {
-                    api.getPokemonImage(for: evoId)
+                    api.getPokemonImage(type: .EvoSprite, for: evoId)
                 }
                 self.updateView()
                 if evoList.count < 3 {
@@ -169,37 +162,46 @@ extension PokemonViewController:NetworkingDelegate {
         }
     }
     
-    func apiDidReturnWithImage(image: UIImage) {
-        if pokemonSprite.image == nil {
-            pokemonSprite.image = image
-        } else {
-            guard let evo = pokemon?.evo else {return print("failed gaurd 1")}
-            guard evo.count > 1 else {return print("failed guard 2")}
-            let evoStrings = evo.flatMap{String($0)}
-            if evoStrings.count == 2 {
-                DispatchQueue.main.async {
+    func apiDidReturnWithImage(type: PokeImageType, image: UIImage) {
+        DispatchQueue.main.async {
+            switch type {
+            case .PokeSprite:
+                
+                self.pokemonSprite.image = image
+            case .EvoSprite:
+                guard let evo = self.pokemon?.evo else {return print("failed gaurd 1")}
+                guard evo.count > 1 else {return print("failed guard 2")}
+                let evoStrings = evo.flatMap{String($0)}
+                if evoStrings.count == 2 {
                     if image.accessibilityIdentifier ==  evoStrings[0] {
                         self.evo1.setImage(image, for: .normal)
                     } else {
                         self.evo2.setImage(image, for: .normal)
+                        
                     }
                 }
-            }
-            if evoStrings.count == 3 {
-                guard let imageStr = image.accessibilityIdentifier else {return}
-                DispatchQueue.main.async {
+
+                
+                if evoStrings.count == 3 {
+                    guard let imageStr = image.accessibilityIdentifier else {return print("failedAtImageAccessID")}
+                    
                     switch imageStr {
                     case evoStrings[0]:
                         self.evo1.setImage(image, for: .normal)
+            
                     case evoStrings[1]:
                         self.evo2.setImage(image, for: .normal)
+            
                     case evoStrings[2]:
                         self.evo3.setImage(image, for: .normal)
                     default: break
                     }
                     self.updateView()
                 }
+            default:
+                break
             }
+            
         }
     }
     

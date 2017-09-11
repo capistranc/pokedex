@@ -55,7 +55,7 @@ class Pokemon {
         let evoId = evoUrl.components(separatedBy: "/").filter{$0 != ""}.last.flatMap{Int($0)}
         
         self.evolutionId = evoId
-        self.flavorText = flavorText
+        self.flavorText = flavorText.replacingOccurrences(of: "\n", with: "")
     }
     
     func setEvolutionLine(json:[String:Any]) {

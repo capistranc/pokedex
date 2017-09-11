@@ -9,11 +9,11 @@
 import UIKit
 
 class PokemonTableController: UITableViewController {
-    weak var imageView:UIImageView!
+    var imageView:UIImageView!
+    var user = User()
     
     var pokemonList:[String] = []
-    func assignBackground() {
-        let background = UIImage(named: "background")
+    func assignBackground(background:UIImage) {
         self.tableView.backgroundView = UIImageView(image: background)
         imageView = UIImageView(frame: view.bounds)
         imageView.contentMode =  UIViewContentMode.scaleAspectFill
@@ -29,7 +29,9 @@ class PokemonTableController: UITableViewController {
 //        assignBackground()
         let api = Networking()
         api.delegate = self
+        
         api.getPokemonPage(callType: .PokemonList, forId: nil)
+        api.getPokemonImage(type: .Background, for: nil)
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -45,7 +47,15 @@ class PokemonTableController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "Cell") else {
             fatalError("No cell created, bad Identifier")}
-        cell.textLabel?.text = self.pokemonList[indexPath.row]
+        var idText = String(indexPath.row+1);
+        if idText.characters.count == 2 {idText = "0" + idText}
+        if idText.characters.count == 1 {idText = "00" + idText}
+        cell.textLabel?.text = idText + " " + self.pokemonList[indexPath.row]
+        cell.textLabel?.textColor = .white
+        
+        cell.detailTextLabel?.text = user.nicknames[indexPath.row+1]
+        cell.detailTextLabel?.textColor = .white
+
         return cell
     }
     
@@ -76,14 +86,17 @@ extension PokemonTableController:NetworkingDelegate {
         }
     }
     
-    func apiDidReturnWithImage(image: UIImage) {
-        return
+    func apiDidReturnWithImage(type:PokeImageType, image: UIImage) {
+        if type == .Background {
+            DispatchQueue.main.async {
+        self.assignBackground(background: image)
+            }
+        }
     }
     
     func apiDidFailWithError(error: NetworkError) {
         print(error)
     }
-    
     func apiResponseFailure(status: NetworkError){
         print(status)
     }
