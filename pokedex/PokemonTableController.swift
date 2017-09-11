@@ -11,9 +11,8 @@ import UIKit
 class PokemonTableController: UITableViewController {
     var imageView:UIImageView!
     var user = User()
-    
-    
     var pokemonList:[String] = []
+    
     func assignBackground(background:UIImage) {
         self.tableView.backgroundView = UIImageView(image: background)
         imageView = UIImageView(frame: view.bounds)
@@ -32,7 +31,7 @@ class PokemonTableController: UITableViewController {
         api.delegate = self
         
         api.getPokemonPage(callType: .PokemonList, forId: nil)
-        api.getPokemonImage(type: .Background, for: nil)
+        api.getPokemonImage(type: .Background1, for: nil)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -62,7 +61,10 @@ class PokemonTableController: UITableViewController {
         
         cell.detailTextLabel?.text = user.nicknames[indexPath.row+1]
         cell.detailTextLabel?.textColor = .white
-        api.getPokemonImage(type: .PokeSprite, for: indexPath.row+1)
+        if cell.imageView?.image == nil {
+            api.getPokemonImage(type: .PokeSprite, for: indexPath.row+1)
+        }
+        
         return cell
     }
     
@@ -95,19 +97,16 @@ extension PokemonTableController:NetworkingDelegate {
     }
     
     func apiDidReturnWithImage(type:PokeImageType, image: UIImage) {
-        print("test")
         switch type {
-        case .Background:
+        case .Background1:
             DispatchQueue.main.async {
                 self.assignBackground(background: image)
             }
         case .PokeSprite:
-            print("test")
+            DispatchQueue.main.async {
             guard let idStr = image.accessibilityIdentifier else {return print("badId")}
             guard let id = Int(idStr) else {return print("idNotAnInt")}
             let i = IndexPath(row: id-1, section: 0)
-            
-            DispatchQueue.main.async {
             guard let cell = self.tableView.cellForRow(at: i) else {return print("badCellId")}
             cell.imageView?.image = image
                 self.tableView.reloadData()

@@ -31,7 +31,8 @@ enum ApiPage {
 
 enum PokeImageType {
     case PokeSprite
-    case Background
+    case Background1
+    case Background2
     case EvoSprite
 }
 
@@ -86,8 +87,10 @@ class Networking {
     
     func setImageLocation(type:PokeImageType) -> String {
         switch type {
-        case .Background:
+        case .Background1:
             return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background.imageset/background.jpg"
+        case .Background2:
+            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
         case .PokeSprite:
             return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
         case .EvoSprite:

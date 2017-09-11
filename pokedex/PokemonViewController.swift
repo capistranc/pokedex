@@ -15,7 +15,7 @@ class PokemonViewController:UIViewController {
     var user:User?
     var pokemon:Pokemon?
     var imageView : UIImageView!
-    
+
     @IBOutlet weak var mainViewContainer: UIStackView!
     
     @IBOutlet weak var nicknameField: UITextField!
@@ -48,6 +48,7 @@ class PokemonViewController:UIViewController {
         api.getPokemonPage(callType: .Pokemon, forId: pokeId)
         api.getPokemonPage(callType: .SpeciesInfo, forId: pokeId)
         api.getPokemonImage(type: .PokeSprite, for: pokeId)
+        api.getPokemonImage(type: .Background2, for: nil)
         flavorText.numberOfLines = 0
         flavorText.sizeToFit()
     }
@@ -60,6 +61,7 @@ class PokemonViewController:UIViewController {
     }
     
     func updateView() {
+        print("updating view")
         guard let pokeId = selectedPokemonId else {return}
         var idText = String(pokeId);
         if idText.characters.count == 2 {idText = "0" + idText}
@@ -77,7 +79,7 @@ class PokemonViewController:UIViewController {
     func selectBackground(type: String) {
         switch type {
         default:
-            assignBackground(name: "defaultBackground")
+//            assignBackground(name: "defaultBackground")
             break
         }
     }
@@ -87,8 +89,7 @@ class PokemonViewController:UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func assignBackground(name: String){
-        let background = UIImage(named: name)
+    func assignBackground(background:UIImage) {
         imageView = UIImageView(frame: view.bounds)
         imageView.contentMode =  UIViewContentMode.scaleAspectFill
         imageView.clipsToBounds = true
@@ -149,8 +150,11 @@ extension PokemonViewController:NetworkingDelegate {
     func apiDidReturnWithImage(type: PokeImageType, image: UIImage) {
         DispatchQueue.main.async {
             switch type {
+            case .Background2:
+                DispatchQueue.main.async {
+                    self.assignBackground(background: image)
+                }
             case .PokeSprite:
-                
                 self.pokemonSprite.image = image
             case .EvoSprite:
                 guard let evo = self.pokemon?.evo else {return print("failed gaurd 1")}
