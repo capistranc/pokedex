@@ -9,20 +9,12 @@
 import UIKit
 
 class PokemonTableController: UITableViewController {
-    var imageView:UIImageView!
     var user = User()
     var pokemonList:[String] = []
     var pokemonImages:[Int:UIImage] = [:]
     
     func assignBackground(background:UIImage) {
         self.tableView.backgroundView = UIImageView(image: background)
-        imageView = UIImageView(frame: view.bounds)
-        imageView.contentMode =  UIViewContentMode.scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.image = background
-        imageView.center = view.center
-        view.addSubview(imageView)
-        self.view.sendSubview(toBack: imageView)
     }
     
     override func viewDidLoad() {

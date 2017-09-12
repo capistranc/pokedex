@@ -89,7 +89,7 @@ class Networking {
     func setImageLocation(type:PokeImageType) -> String {
         switch type {
         case .Background1:
-            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background.imageset/background.jpg"
+            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background1.imageset/background1.jpeg"
         case .Background2:
             return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
         case .PokeSprite:

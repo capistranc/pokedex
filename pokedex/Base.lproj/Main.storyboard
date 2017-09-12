@@ -102,20 +102,19 @@
                                                 <size key="shadowOffset" width="1" height="-1"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IG8-gA-6rm">
-                                                <rect key="frame" x="101.5" y="33.5" width="132" height="30"/>
+                                                <rect key="frame" x="136" y="33.5" width="63" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMu-IP-rEd">
                                                         <rect key="frame" x="0.0" y="0.0" width="38" height="30"/>
                                                         <state key="normal" title="Shiny">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gPD-xL-fHL">
-                                                        <rect key="frame" x="38" y="0.0" width="69" height="30"/>
-                                                        <state key="normal" title="Nickname"/>
+                                                        <connections>
+                                                            <action selector="shinyTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rym-Kw-t0P"/>
+                                                        </connections>
                                                     </button>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wrO-9z-B2I">
-                                                        <rect key="frame" x="107" y="0.0" width="25" height="30"/>
+                                                        <rect key="frame" x="38" y="0.0" width="25" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -271,7 +270,6 @@
                         <outlet property="heightLabel" destination="HsJ-3g-kNL" id="zKL-Dk-7o8"/>
                         <outlet property="mainViewContainer" destination="UGm-Xp-fYQ" id="qdq-NS-UhY"/>
                         <outlet property="nameLabel" destination="FAZ-uV-H72" id="fJz-xz-0ok"/>
-                        <outlet property="nicknameButton" destination="gPD-xL-fHL" id="7BT-nT-JM6"/>
                         <outlet property="nicknameField" destination="wrO-9z-B2I" id="jPQ-ew-aIz"/>
                         <outlet property="pokemonSprite" destination="r0S-UG-eT4" id="XpC-DX-v4u"/>
                         <outlet property="pokemonSpriteButton" destination="VMu-IP-rEd" id="bGF-2s-g7g"/>

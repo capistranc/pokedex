@@ -14,12 +14,11 @@ class PokemonViewController:UIViewController {
     var selectedPokemonId:Int?
     var user:User?
     var pokemon:Pokemon?
-    var imageView : UIImageView!
+    var backgroundImageView : UIImageView!
 
     @IBOutlet weak var mainViewContainer: UIStackView!
     
     @IBOutlet weak var nicknameField: UITextField!
-    @IBOutlet weak var nicknameButton: UIButton!
     @IBOutlet weak var shinyButton: UIButton!
     @IBOutlet weak var pokemonSpriteButton: UIButton!
     @IBOutlet weak var pokemonSprite: UIImageView!
@@ -44,6 +43,7 @@ class PokemonViewController:UIViewController {
         nicknameField.isHidden = true
         initPageWithId(id: pokeId)
         
+        
         flavorText.numberOfLines = 0
         flavorText.sizeToFit()
     }
@@ -52,7 +52,7 @@ class PokemonViewController:UIViewController {
         guard let user = user else {return}
         let api = Networking()
         api.delegate = self
-        
+
         api.getPokemonPage(callType: .Pokemon, forId: id)
         api.getPokemonPage(callType: .SpeciesInfo, forId: id)
         api.getPokemonImage(type: .Background2, for: nil)
@@ -92,13 +92,13 @@ class PokemonViewController:UIViewController {
     }
     
     func assignBackground(background:UIImage) {
-        imageView = UIImageView(frame: view.bounds)
-        imageView.contentMode =  UIViewContentMode.scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.image = background
-        imageView.center = view.center
-        view.addSubview(imageView)
-        self.view.sendSubview(toBack: imageView)
+        backgroundImageView = UIImageView(frame: view.bounds)
+        backgroundImageView.contentMode =  UIViewContentMode.scaleAspectFill
+        backgroundImageView.clipsToBounds = true
+        backgroundImageView.image = background
+        backgroundImageView.center = view.center
+        view.addSubview(backgroundImageView)
+        self.view.sendSubview(toBack: backgroundImageView)
     }
     
     @IBAction func evoButtonTapped(_ sender:Any) {
@@ -107,6 +107,17 @@ class PokemonViewController:UIViewController {
         self.selectedPokemonId = newSelectedPokemonId
         pokemonSprite.image = button.imageView?.image
         initPageWithId(id: newSelectedPokemonId)
+    }
+    @IBAction func shinyTouched(_ sender: Any) {
+        guard let id = selectedPokemonId else {return}
+        guard let currentUser = user else {return}
+        
+        if let fav = currentUser.favorites[id] {
+            user?.favorites[id] = !fav
+        } else {
+            user?.favorites[id] = true
+        }
+        initPageWithId(id: id)
     }
 }
 
