@@ -12,6 +12,7 @@ class PokemonTableController: UITableViewController {
     var imageView:UIImageView!
     var user = User()
     var pokemonList:[String] = []
+    var pokemonImages:[Int:UIImage] = [:]
     
     func assignBackground(background:UIImage) {
         self.tableView.backgroundView = UIImageView(image: background)
@@ -26,12 +27,15 @@ class PokemonTableController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        assignBackground()
         let api = Networking()
         api.delegate = self
         
         api.getPokemonPage(callType: .PokemonList, forId: nil)
         api.getPokemonImage(type: .Background1, for: nil)
+        
+        for i in 1...151 {
+            api.getPokemonImage(type: .PokeSprite, for: i)
+        }
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -47,26 +51,27 @@ class PokemonTableController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let api = Networking()
-        api.delegate = self
-        
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "Cell") else {
             fatalError("No cell created, bad Identifier")}
-        var idText = String(indexPath.row+1);
+        let thisId = indexPath.row+1
+        var idText = String(thisId);
         if idText.characters.count == 2 {idText = "0" + idText}
         if idText.characters.count == 1 {idText = "00" + idText}
         cell.textLabel?.text = idText + " " + self.pokemonList[indexPath.row]
         cell.textLabel?.textColor = .white
         
-        cell.detailTextLabel?.text = user.nicknames[indexPath.row+1]
+        cell.detailTextLabel?.text = user.nicknames[thisId]
         cell.detailTextLabel?.textColor = .white
-        if cell.imageView?.image == nil {
-            api.getPokemonImage(type: .PokeSprite, for: indexPath.row+1)
-        }
-        
+        cell.imageView?.image = pokemonImages[thisId]
         return cell
     }
+    
+    func getPokeImage(id:Int) {
+        let api = Networking()
+        api.delegate = self
+        api.getPokemonImage(type: .PokeSprite, for: id)
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else {return}
@@ -104,13 +109,12 @@ extension PokemonTableController:NetworkingDelegate {
             }
         case .PokeSprite:
             DispatchQueue.main.async {
-            guard let idStr = image.accessibilityIdentifier else {return print("badId")}
-            guard let id = Int(idStr) else {return print("idNotAnInt")}
-            let i = IndexPath(row: id-1, section: 0)
-            guard let cell = self.tableView.cellForRow(at: i) else {return print("badCellId")}
-            cell.imageView?.image = image
+                guard let idStr = image.accessibilityIdentifier else {return print("badId")}
+                guard let id = Int(idStr) else {return print("idNotAnInt")}
+                self.pokemonImages[id] = image
                 self.tableView.reloadData()
             }
+            break
         default:
             break
         }

@@ -30,6 +30,7 @@ enum ApiPage {
 }
 
 enum PokeImageType {
+    case ShinySprite
     case PokeSprite
     case Background1
     case Background2
@@ -95,6 +96,9 @@ class Networking {
             return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
         case .EvoSprite:
             return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+        case .ShinySprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"
+            
         }
     }
     
@@ -127,7 +131,6 @@ class Networking {
             } else {
                 image.accessibilityIdentifier = "background"
             }
-            
             
             self.delegate?.apiDidReturnWithImage(type: type, image: image)
         }

@@ -37,31 +37,33 @@ class PokemonViewController:UIViewController {
         super.viewDidLoad()
         guard let pokeId = selectedPokemonId else {return}
         self.pokemon = Pokemon(id: pokeId)
-        let api = Networking()
-        api.delegate = self
         evo1.tag = 0
         evo2.tag = 1
         evo3.tag = 2
         
         nicknameField.isHidden = true
+        initPageWithId(id: pokeId)
         
-        api.getPokemonPage(callType: .Pokemon, forId: pokeId)
-        api.getPokemonPage(callType: .SpeciesInfo, forId: pokeId)
-        api.getPokemonImage(type: .PokeSprite, for: pokeId)
-        api.getPokemonImage(type: .Background2, for: nil)
         flavorText.numberOfLines = 0
         flavorText.sizeToFit()
     }
     
     func initPageWithId(id:Int) {
+        guard let user = user else {return}
         let api = Networking()
         api.delegate = self
+        
         api.getPokemonPage(callType: .Pokemon, forId: id)
         api.getPokemonPage(callType: .SpeciesInfo, forId: id)
+        api.getPokemonImage(type: .Background2, for: nil)
+        if (user.favorites[id] == true) {
+            api.getPokemonImage(type: .ShinySprite, for: id)
+        } else {
+            api.getPokemonImage(type: .PokeSprite, for: id)
+        }
     }
     
     func updateView() {
-        print("updating view")
         guard let pokeId = selectedPokemonId else {return}
         var idText = String(pokeId);
         if idText.characters.count == 2 {idText = "0" + idText}
@@ -154,8 +156,11 @@ extension PokemonViewController:NetworkingDelegate {
                 DispatchQueue.main.async {
                     self.assignBackground(background: image)
                 }
+            case .ShinySprite:
+                fallthrough
             case .PokeSprite:
                 self.pokemonSprite.image = image
+                break
             case .EvoSprite:
                 guard let evo = self.pokemon?.evo else {return print("failed gaurd 1")}
                 if evo.count == 1 {self.evo1.setImage(image, for: .normal)}
