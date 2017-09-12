@@ -18,6 +18,7 @@ class PokemonViewController:UIViewController {
 
     @IBOutlet weak var mainViewContainer: UIStackView!
     
+    @IBOutlet weak var shinySwitch: UISwitch!
     @IBOutlet weak var nicknameField: UITextField!
     @IBOutlet weak var shinyButton: UIButton!
     @IBOutlet weak var pokemonSpriteButton: UIButton!
@@ -40,7 +41,6 @@ class PokemonViewController:UIViewController {
         evo2.tag = 1
         evo3.tag = 2
         
-        nicknameField.isHidden = true
         initPageWithId(id: pokeId)
         
         
@@ -52,13 +52,16 @@ class PokemonViewController:UIViewController {
         guard let user = user else {return}
         let api = Networking()
         api.delegate = self
+        
 
         api.getPokemonPage(callType: .Pokemon, forId: id)
         api.getPokemonPage(callType: .SpeciesInfo, forId: id)
         api.getPokemonImage(type: .Background2, for: nil)
         if (user.favorites[id] == true) {
             api.getPokemonImage(type: .ShinySprite, for: id)
+            shinySwitch.isOn = true
         } else {
+            shinySwitch.isOn = false
             api.getPokemonImage(type: .PokeSprite, for: id)
         }
     }
