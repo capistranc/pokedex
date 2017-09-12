@@ -10,5 +10,5 @@ import Foundation
 
 struct User {
     var favorites:[Int:Bool] = [6:true,5:false]
-    var nicknames:[Int:String] = [5:"doofus"]
+    var nicknames:[Int:String] = [:]
 }
