@@ -11,25 +11,47 @@ import UIKit
 class PokemonTableController: UITableViewController {
     var user = User()
     var pokemonList:[String] = []
+//    static var pokemons:[Int:Pokemon] = [:]
     var pokemonImages:[Int:UIImage] = [:]
     
     func assignBackground(background:UIImage) {
-        self.tableView.backgroundView = UIImageView(image: background)
+        DispatchQueue.main.async {
+            self.tableView.backgroundView = UIImageView(image: background)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let api = Networking()
-        api.delegate = self
-        
-        api.getPokemonPage(callType: .PokemonList, forId: nil)
-        api.getPokemonImage(type: .Background1, for: nil)
-        
-        for i in 1...151 {
-            api.getPokemonImage(type: .PokeSprite, for: i)
+        Networking.getPokemonPage(callType: .PokemonList, forId: nil) {[unowned self] json in
+            guard let results = json["results"] as? [[String:Any]] else {return}
+            let pokeList = results.flatMap{ $0["name"] as? String}.map{$0.capitalized}
+            DispatchQueue.main.async { // should only be used for UI updates
+                if self.pokemonList != [] {
+                    self.pokemonList.append(contentsOf: pokeList)
+                } else {
+                    self.pokemonList = pokeList
+                }
+                self.tableView.reloadData()
+            }
         }
         
+        Networking.getPokemonImage(callType: .Background1, forId: nil) { image in
+            self.assignBackground(background: image)
+        }
+        
+        for i in 1...151 {
+            Networking.getPokemonImage(callType: .PokeSprite, forId: i) { [unowned self] image in
+                guard let idStr = image.accessibilityIdentifier else {return print("badId")}
+                guard let id = Int(idStr) else {return print("idNotAnInt")}
+                DispatchQueue.main.async {
+                    self.pokemonImages[i] = image
+                }
+                
+            }
+        }
+        print("end of loading:", self.pokemonList)
         // Do any additional setup after loading the view, typically from a nib.
+        
     }
     
     
@@ -47,6 +69,8 @@ class PokemonTableController: UITableViewController {
             fatalError("No cell created, bad Identifier")}
         let thisId = indexPath.row+1
         var idText = String(thisId);
+        print(idText)
+        print(thisId)
         if idText.characters.count == 2 {idText = "0" + idText}
         if idText.characters.count == 1 {idText = "00" + idText}
         cell.textLabel?.text = idText + " " + self.pokemonList[indexPath.row]
@@ -58,11 +82,6 @@ class PokemonTableController: UITableViewController {
         return cell
     }
     
-    func getPokeImage(id:Int) {
-        let api = Networking()
-        api.delegate = self
-        api.getPokemonImage(type: .PokeSprite, for: id)
-    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -74,48 +93,5 @@ class PokemonTableController: UITableViewController {
         nextView.selectedPokemonId = indexPath.row + 1
         nextView.user = self.user
         self.tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-extension PokemonTableController:NetworkingDelegate {
-    func apiDidReturnWithJson(json:[String:Any], callType:ApiPage) {
-        if callType == .PokemonList {
-            guard let results = json["results"] as? [[String:Any]] else {return}
-            let pokeList = results.flatMap{ $0["name"] as? String}.map{$0.capitalized}
-            DispatchQueue.main.async { // should only be used for UI updates
-                if self.pokemonList != [] {
-                    self.pokemonList.append(contentsOf: pokeList)
-                } else {
-                    self.pokemonList = pokeList
-                }
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    func apiDidReturnWithImage(type:PokeImageType, image: UIImage) {
-        switch type {
-        case .Background1:
-            DispatchQueue.main.async {
-                self.assignBackground(background: image)
-            }
-        case .PokeSprite:
-            DispatchQueue.main.async {
-                guard let idStr = image.accessibilityIdentifier else {return print("badId")}
-                guard let id = Int(idStr) else {return print("idNotAnInt")}
-                self.pokemonImages[id] = image
-                self.tableView.reloadData()
-            }
-            break
-        default:
-            break
-        }
-    }
-    
-    func apiDidFailWithError(error: NetworkError) {
-        print(error)
-    }
-    func apiResponseFailure(status: NetworkError){
-        print(status)
     }
 }

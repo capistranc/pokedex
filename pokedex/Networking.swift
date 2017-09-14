@@ -9,19 +9,6 @@
 import Foundation
 import UIKit
 
-enum NetworkError:Error {
-    case ApiFailed(String)
-    case ApiBadResponse(Int)
-}
-
-protocol NetworkingDelegate:class { // functions to return to master
-    func apiDidReturnWithJson(json: [String:Any], callType: ApiPage)
-    func apiDidReturnWithImage(type: PokeImageType, image: UIImage)
-    
-    func apiDidFailWithError(error: NetworkError)
-    func apiResponseFailure(status: NetworkError)
-}
-
 enum ApiPage {
     case PokemonList
     case Pokemon
@@ -49,92 +36,69 @@ func setPage(for callType: ApiPage) -> String {
         return "pokemon-species/"
     }
 }
+func setImageLocation(type:PokeImageType) -> String {
+    switch type {
+    case .Background1:
+        return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background1.imageset/background1.jpeg"
+    case .Background2:
+        return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
+    case .PokeSprite:
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+    case .EvoSprite:
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+    case .ShinySprite:
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"
+        
+    }
+}
 
 class Networking {
-    weak var delegate:NetworkingDelegate? //This is our master
-    let basePage = "https://pokeapi.co/api/v2/"
-    
-    func getPokemonPage(callType:ApiPage,forId id:Int?) {
+    static func getPokemonPage(callType:ApiPage, forId id:Int?, completion:@escaping ([String:Any])->()) {
+        let basePage = "https://pokeapi.co/api/v2/"
         var page = setPage(for: callType)
         if let idStr = id {page = page + "\(idStr)"}
+        guard let url = URL(string: basePage + page) else {return}
         
-        guard let url = URL(string: basePage + page) else {
-            self.delegate?.apiDidFailWithError(error: .ApiFailed("bad api endpoint"))
-            return
-        }
         
         let session = URLSession.shared
-        let task = session.dataTask(with: url) { (data, response, error) in
-            guard error == nil else {
-                self.delegate?.apiDidFailWithError(error: .ApiFailed(error!.localizedDescription))
-                return
-            }
-            guard let res = response as? HTTPURLResponse else {return}
-            guard res.statusCode == 200 else {
-                self.delegate?.apiResponseFailure(status: .ApiBadResponse(res.statusCode))
-                return
-            }
+        let task = session.dataTask(with: url) { (data, res, error) in
+            guard error == nil else {return}
+            guard let res = res as? HTTPURLResponse else {return}
+            guard res.statusCode == 200 else {return print(res.statusCode)}
+            
             guard let data = data else {return}
             do {
-                let jsonObject = try JSONSerialization.jsonObject(with: data)
-                guard let json = jsonObject as? [String:Any] else {return}
-                self.delegate?.apiDidReturnWithJson(json: json, callType: callType)
-            } catch let error {
-                print(error.localizedDescription)
+                let json = try JSONSerialization.jsonObject(with: data)
+                guard let dictionary = json as? [String:Any] else {return print("bad json data")}
+                completion(dictionary)
+            } catch {
+                print("something went wrong")
             }
         }
         task.resume()
     }
     
-    func setImageLocation(type:PokeImageType) -> String {
-        switch type {
-        case .Background1:
-            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background1.imageset/background1.jpeg"
-        case .Background2:
-            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
-        case .PokeSprite:
-            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-        case .EvoSprite:
-            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-        case .ShinySprite:
-            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"
-            
-        }
-    }
-    
-    func getPokemonImage(type:PokeImageType, for id:Int?) {
-        var urlString = setImageLocation(type: type)
+    static func getPokemonImage(callType:PokeImageType, forId id:Int?, completion:@escaping (UIImage)->()) {
+        var urlString = setImageLocation(type: callType)
         if let idStr = id {urlString = urlString + "\(idStr).png"}
         
-        guard let url = URL(string: urlString) else {
-            self.delegate?.apiDidFailWithError(error: .ApiFailed("bad api endpoint"))
-            return
-        }
+        guard let url = URL(string: urlString) else {return}
         
         let session = URLSession.shared
         let task = session.dataTask(with: url) { (data, response, error) in
-            guard error == nil else {
-                self.delegate?.apiDidFailWithError(error: .ApiFailed(error!.localizedDescription))
-                return
-            }
-            
+            guard error == nil else {return}
             guard let res = response as? HTTPURLResponse else {return}
-            guard res.statusCode == 200 else {
-                self.delegate?.apiResponseFailure(status: .ApiBadResponse(res.statusCode))
-                return
-            }
+            guard res.statusCode == 200 else {return print(res.statusCode)}
+            guard let data = data else {return print("bad data")}
+            guard let image = UIImage(data:data) else {return print("bad image data")}
             
-            guard let data = data else {return}
-            guard let image = UIImage(data:data) else {return}
             if let idNum = id {
                 image.accessibilityIdentifier = "\(idNum)"
             } else {
                 image.accessibilityIdentifier = "background"
             }
-            
-            self.delegate?.apiDidReturnWithImage(type: type, image: image)
+            completion(image)
         }
-        
         task.resume()
     }
 }
