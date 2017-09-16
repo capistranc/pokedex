@@ -22,8 +22,9 @@ class Pokemon {
     var evo:[Int]?
     var evolutionId:Int?
     
-    init(id:Int) {
+    init(id:Int, name:String) {
         self.id = id
+        self.name = name
     }
     
     func initWithJson(json:[String:Any]) {

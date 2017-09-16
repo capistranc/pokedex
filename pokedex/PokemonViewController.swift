@@ -32,11 +32,9 @@ class PokemonViewController:UIViewController {
     @IBOutlet weak var evo2: UIButton!
     @IBOutlet weak var evo3: UIButton!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let pokeId = selectedPokemonId else {return}
-        self.pokemon = Pokemon(id: pokeId)
         evo1.tag = 0
         evo2.tag = 1
         evo3.tag = 2
@@ -65,20 +63,20 @@ class PokemonViewController:UIViewController {
             DispatchQueue.main.async{
                 self?.pokemon?.setFlavorText(json: json)
                 self?.updateView()
-                Networking.getPokemonPage(callType: .EvolutionChain, forId: self?.pokemon?.evolutionId){ [weak self] json in
-                    DispatchQueue.main.async {
-                        
-                        self?.pokemon?.setEvolutionLine(json: json)
-                        
-                        guard let evoList = self?.pokemon?.evo else {return print("broke at evoList")}
-                        for evoId in evoList {
-                            guard let this = self else {return}
-                            Networking.getPokemonImage(callType: .EvoSprite, forId: evoId, completion: this.setEvolutionImages)
-                        }
-                        self?.setEvolutionButtons(count: evoList.count)
-                        self?.updateView()
+            }
+            Networking.getPokemonPage(callType: .EvolutionChain, forId: self?.pokemon?.evolutionId){ [weak self] json in
+                DispatchQueue.main.async {
+                    
+                    self?.pokemon?.setEvolutionLine(json: json)
+                    guard let evoList = self?.pokemon?.evo else {return print("broke at evoList")}
+                    for evoId in evoList {
+                        guard let this = self else {return}
+                        Networking.getPokemonImage(callType: .EvoSprite, forId: evoId, completion: this.setEvolutionImages)
                     }
+                    self?.setEvolutionButtons(count: evoList.count)
+                    self?.updateView()
                 }
+                
             }
         }
         
@@ -179,7 +177,7 @@ class PokemonViewController:UIViewController {
     }
     
     func assignBackground(background:UIImage) {
-        DispatchQueue.main.async {
+        
             self.backgroundImageView = UIImageView(frame: self.view.bounds)
             self.backgroundImageView.contentMode =  UIViewContentMode.scaleAspectFill
             self.backgroundImageView.clipsToBounds = true
@@ -187,7 +185,7 @@ class PokemonViewController:UIViewController {
             self.backgroundImageView.center = self.view.center
             self.view.addSubview(self.backgroundImageView)
             self.view.sendSubview(toBack: self.backgroundImageView)
-        }
+        
     }
     
     @IBAction func evoButtonTapped(_ sender:Any) {

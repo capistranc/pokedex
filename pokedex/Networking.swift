@@ -14,7 +14,21 @@ enum ApiPage {
     case Pokemon
     case EvolutionChain
     case SpeciesInfo
+    
+    func setPage() -> String {
+        switch self {
+        case .PokemonList:
+            return "pokemon/?offset="
+        case .Pokemon:
+            return "pokemon/"
+        case .EvolutionChain:
+            return "evolution-chain/"
+        case .SpeciesInfo:
+            return "pokemon-species/"
+        }
+    }
 }
+
 
 enum PokeImageType {
     case ShinySprite
@@ -22,43 +36,29 @@ enum PokeImageType {
     case Background1
     case Background2
     case EvoSprite
-}
-
-func setPage(for callType: ApiPage) -> String {
-    switch callType {
-    case .PokemonList:
-        return "pokemon/?limit=151"
-    case .Pokemon:
-        return "pokemon/"
-    case .EvolutionChain:
-        return "evolution-chain/"
-    case .SpeciesInfo:
-        return "pokemon-species/"
-    }
-}
-func setImageLocation(type:PokeImageType) -> String {
-    switch type {
-    case .Background1:
-        return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background1.imageset/background1.jpeg"
-    case .Background2:
-        return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
-    case .PokeSprite:
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-    case .EvoSprite:
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-    case .ShinySprite:
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"
-        
+    func setImageLocation() -> String {
+        switch self {
+        case .Background1:
+            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/background1.imageset/background1.jpeg"
+        case .Background2:
+            return "https://raw.githubusercontent.com/capistranc/pokedex/master/pokedex/Assets.xcassets/defaultBackground.imageset/defaultBackground.jpg"
+        case .PokeSprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+        case .EvoSprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+        case .ShinySprite:
+            return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/"
+            
+        }
     }
 }
 
 class Networking {
     static func getPokemonPage(callType:ApiPage, forId id:Int?, completion:@escaping ([String:Any])->()) {
         let basePage = "https://pokeapi.co/api/v2/"
-        var page = setPage(for: callType)
+        var page = callType.setPage()
         if let idStr = id {page = page + "\(idStr)"}
         guard let url = URL(string: basePage + page) else {return}
-        
         
         let session = URLSession.shared
         let task = session.dataTask(with: url) { (data, res, error) in
@@ -79,7 +79,7 @@ class Networking {
     }
     
     static func getPokemonImage(callType:PokeImageType, forId id:Int?, completion:@escaping (UIImage)->()) {
-        var urlString = setImageLocation(type: callType)
+        var urlString = callType.setImageLocation()
         if let idStr = id {urlString = urlString + "\(idStr).png"}
         
         guard let url = URL(string: urlString) else {return}

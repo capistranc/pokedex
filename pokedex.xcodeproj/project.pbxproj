@@ -16,6 +16,9 @@
 		04274AFD1F62D45C00A94391 /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274AFC1F62D45C00A94391 /* Pokemon.swift */; };
 		04274AFF1F62D48D00A94391 /* PokemonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274AFE1F62D48D00A94391 /* PokemonViewController.swift */; };
 		04274B011F62D4A600A94391 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274B001F62D4A600A94391 /* Networking.swift */; };
+		0482100B1F6C4AB9002D5FAC /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100A1F6C4AB9002D5FAC /* Cache.swift */; };
+		0482100D1F6C520C002D5FAC /* PokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100C1F6C520C002D5FAC /* PokeCell.swift */; };
+		0482100F1F6C5C08002D5FAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100E1F6C5C08002D5FAC /* Constants.swift */; };
 		048E61191F644FC90009EEF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E61181F644FC90009EEF8 /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +34,9 @@
 		04274AFC1F62D45C00A94391 /* Pokemon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
 		04274AFE1F62D48D00A94391 /* PokemonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonViewController.swift; sourceTree = "<group>"; };
 		04274B001F62D4A600A94391 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		0482100A1F6C4AB9002D5FAC /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		0482100C1F6C520C002D5FAC /* PokeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeCell.swift; sourceTree = "<group>"; };
+		0482100E1F6C5C08002D5FAC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		048E61181F644FC90009EEF8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +85,9 @@
 			children = (
 				04274AE21F62D40C00A94391 /* AppDelegate.swift */,
 				048E61181F644FC90009EEF8 /* User.swift */,
+				0482100A1F6C4AB9002D5FAC /* Cache.swift */,
 				04274AFC1F62D45C00A94391 /* Pokemon.swift */,
+				0482100E1F6C5C08002D5FAC /* Constants.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -106,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				04274AE41F62D40C00A94391 /* PokemonTableController.swift */,
+				0482100C1F6C520C002D5FAC /* PokeCell.swift */,
 				04274AFE1F62D48D00A94391 /* PokemonViewController.swift */,
 			);
 			name = UI;
@@ -194,9 +203,12 @@
 			files = (
 				04274AEB1F62D40D00A94391 /* pokedex.xcdatamodeld in Sources */,
 				04274AFD1F62D45C00A94391 /* Pokemon.swift in Sources */,
+				0482100B1F6C4AB9002D5FAC /* Cache.swift in Sources */,
 				04274AE51F62D40C00A94391 /* PokemonTableController.swift in Sources */,
 				04274B011F62D4A600A94391 /* Networking.swift in Sources */,
+				0482100F1F6C5C08002D5FAC /* Constants.swift in Sources */,
 				04274AFF1F62D48D00A94391 /* PokemonViewController.swift in Sources */,
+				0482100D1F6C520C002D5FAC /* PokeCell.swift in Sources */,
 				04274AE31F62D40C00A94391 /* AppDelegate.swift in Sources */,
 				048E61191F644FC90009EEF8 /* User.swift in Sources */,
 			);
@@ -277,6 +289,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -326,6 +339,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
