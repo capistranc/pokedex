@@ -80,6 +80,7 @@ class PokemonTypeVC:UITableViewController {
         let dataSet = sectionData[indexPath.section]
         let text = dataSet[indexPath.row]
         cell.textLabel?.text = text
+        cell.textLabel?.textColor = .white
         return cell
     }
     
