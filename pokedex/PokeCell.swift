@@ -10,23 +10,33 @@ import Foundation
 import UIKit
 
 class PokeCell:UITableViewCell {
-
-    func fillCell(id:String) {
-//        self.textLabel?.text = "\(id)"
+    @IBOutlet weak var myImage: UIImageView!
+    @IBOutlet weak var myLabel: UILabel!
+    
+    func fillCell(id:Int, name:String) {
+        var idText = String(id)
+        myLabel.text = idText + " " + name
+        myLabel.textColor = .white
+        if idText.characters.count == 2 {idText = "0" + idText}
+        if idText.characters.count == 1 {idText = "00" + idText}
         
-        if let image = Cache.shared.imageCache.object(forKey: id as NSString) {
-            self.imageView?.image = image
+        
+        myLabel.text = name
+        if let image = Cache.shared.imageCache.object(forKey: String(id) as NSString) {
+            DispatchQueue.main.async{
+            self.myImage.image = image
+            }
         } else {
-            Networking.getPokemonImage(callType: .PokeSprite, forId: Int(id)){ [weak self] image in
-//                guard error == nil else {return}
-//                guard let image = image as? UIImage else {return}
-                Cache.shared.imageCache.setObject(image, forKey: id as NSString)
+            Networking.getPokemonImage(callType: .PokeSprite, forId: id){ [weak self] (image, err) in
+                guard err == nil else {return print(err!)}
+                guard let image = image else {return}
+                Cache.shared.imageHash[id] = image
+                Cache.shared.imageCache.setObject(image, forKey: String(id) as NSString)
                 DispatchQueue.main.async {
-                    self?.imageView?.image = image
+                    self?.myImage.image = image
                 }
             }
         }
-        
     }
 }
 

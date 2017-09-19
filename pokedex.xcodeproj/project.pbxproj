@@ -16,10 +16,12 @@
 		04274AFD1F62D45C00A94391 /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274AFC1F62D45C00A94391 /* Pokemon.swift */; };
 		04274AFF1F62D48D00A94391 /* PokemonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274AFE1F62D48D00A94391 /* PokemonViewController.swift */; };
 		04274B011F62D4A600A94391 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04274B001F62D4A600A94391 /* Networking.swift */; };
+		047E606C1F70B5100037EB0E /* PokemonTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E606B1F70B5100037EB0E /* PokemonTypeVC.swift */; };
 		0482100B1F6C4AB9002D5FAC /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100A1F6C4AB9002D5FAC /* Cache.swift */; };
 		0482100D1F6C520C002D5FAC /* PokeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100C1F6C520C002D5FAC /* PokeCell.swift */; };
 		0482100F1F6C5C08002D5FAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482100E1F6C5C08002D5FAC /* Constants.swift */; };
 		048E61191F644FC90009EEF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E61181F644FC90009EEF8 /* User.swift */; };
+		04A1C4EE1F7040E60035CF8D /* PokemonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1C4ED1F7040E60035CF8D /* PokemonType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,10 +36,12 @@
 		04274AFC1F62D45C00A94391 /* Pokemon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
 		04274AFE1F62D48D00A94391 /* PokemonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonViewController.swift; sourceTree = "<group>"; };
 		04274B001F62D4A600A94391 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		047E606B1F70B5100037EB0E /* PokemonTypeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTypeVC.swift; sourceTree = "<group>"; };
 		0482100A1F6C4AB9002D5FAC /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		0482100C1F6C520C002D5FAC /* PokeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeCell.swift; sourceTree = "<group>"; };
 		0482100E1F6C5C08002D5FAC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		048E61181F644FC90009EEF8 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		04A1C4ED1F7040E60035CF8D /* PokemonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 				048E61181F644FC90009EEF8 /* User.swift */,
 				0482100A1F6C4AB9002D5FAC /* Cache.swift */,
 				04274AFC1F62D45C00A94391 /* Pokemon.swift */,
+				04A1C4ED1F7040E60035CF8D /* PokemonType.swift */,
 				0482100E1F6C5C08002D5FAC /* Constants.swift */,
 			);
 			name = Models;
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				04274AE41F62D40C00A94391 /* PokemonTableController.swift */,
+				047E606B1F70B5100037EB0E /* PokemonTypeVC.swift */,
 				0482100C1F6C520C002D5FAC /* PokeCell.swift */,
 				04274AFE1F62D48D00A94391 /* PokemonViewController.swift */,
 			);
@@ -204,12 +210,14 @@
 				04274AEB1F62D40D00A94391 /* pokedex.xcdatamodeld in Sources */,
 				04274AFD1F62D45C00A94391 /* Pokemon.swift in Sources */,
 				0482100B1F6C4AB9002D5FAC /* Cache.swift in Sources */,
+				047E606C1F70B5100037EB0E /* PokemonTypeVC.swift in Sources */,
 				04274AE51F62D40C00A94391 /* PokemonTableController.swift in Sources */,
 				04274B011F62D4A600A94391 /* Networking.swift in Sources */,
 				0482100F1F6C5C08002D5FAC /* Constants.swift in Sources */,
 				04274AFF1F62D48D00A94391 /* PokemonViewController.swift in Sources */,
 				0482100D1F6C520C002D5FAC /* PokeCell.swift in Sources */,
 				04274AE31F62D40C00A94391 /* AppDelegate.swift in Sources */,
+				04A1C4EE1F7040E60035CF8D /* PokemonType.swift in Sources */,
 				048E61191F644FC90009EEF8 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

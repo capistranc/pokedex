@@ -13,7 +13,8 @@ class Cache {
     
     static var shared = Cache()
     var imageCache = NSCache<NSString, UIImage>()
-    var pokeCache = NSCache<NSString, UIImage>()
+    var pokeCache:[Int:Pokemon] = [:]
+    var imageHash:[Int:UIImage] = [:]
     var user = User()
     
 }
