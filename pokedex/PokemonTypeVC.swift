@@ -25,6 +25,7 @@ class PokemonTypeVC:UITableViewController {
             self.tableView.backgroundView?.addSubview(self.loadingSpinner)
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

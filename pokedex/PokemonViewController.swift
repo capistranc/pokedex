@@ -42,7 +42,6 @@ class PokemonViewController:UIViewController {
         self.loadingView.contentMode =  UIViewContentMode.scaleAspectFill
         self.view.insertSubview(loadingView, aboveSubview: self.view)
         
-        
         evo1.tag = 0
         evo2.tag = 1
         evo3.tag = 2
@@ -104,7 +103,6 @@ class PokemonViewController:UIViewController {
         }
         
         self.flavorText.text = basic
-        
         self.flavorText.sizeToFit()
         setPokeSprite()
         setEvolutionButtons()
@@ -132,15 +130,20 @@ class PokemonViewController:UIViewController {
     
     func setTypeButtons(types:[String]) {
         guard let typeIds = self.pokemon?.typeUrlIds else {return print("failed type guard")}
-        self.type1.tag = typeIds[0]
-        self.type1.titleLabel?.text = types[0]
-        if types.count == 1 {
-            self.type2.isEnabled = false
-            self.type2.isHidden = true
-        } else {
-            self.type2.tag = typeIds[1]
-            self.type2.titleLabel?.text = types[1]
+        DispatchQueue.main.async {
+            self.type1.tag = typeIds[0]
+            if types.count == 1 {
+                self.type2.isEnabled = false
+                self.type2.isHidden = true
+            } else {
+                self.type2.tag = typeIds[1]
+                self.type2.setTitle(types[1].capitalized, for: .normal)
+                self.type2.backgroundColor = self.getColorForType(type: types[1])
+            }
+            self.type1.backgroundColor = self.getColorForType(type: types[0])
+            self.type1.setTitle(types[0].capitalized, for: .normal)
         }
+        
     }
     
     func setAbilityButtons(types:[String]) {
